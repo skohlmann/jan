@@ -1,0 +1,22 @@
+#!/bin/bash
+
+function source_dir {
+    local SOURCE="${BASH_SOURCE[0]}"
+    DIR="$( dirname "$SOURCE" )"
+    while [ -h "$SOURCE" ]
+    do
+        SOURCE="$(readlink "$SOURCE")"
+        [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE"
+        DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd )"
+    done
+    DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+}
+
+source_dir
+
+JAN_SECURE=-Djavax.net.ssl.trustStore=${HOME}/.jan/cacert
+
+JAVA_OPTS="-Djava.util.logging.config.file=${DIR}/etc/logging.properties ${JAVA_OPTS}"
+JAVA_OPTS="-Dorg.slf4j.simpleLogger.defaultLogLevel=warn ${JAVA_OPTS}"
+
+java ${JAVA_OPTS} ${JAN_SECURE} -cp "$DIR/lib/*" de.speexx.jira.jan.app.Application $*
