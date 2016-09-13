@@ -41,11 +41,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -108,18 +106,17 @@ public class IssueTransitionFetcher implements Command {
                             info.priority = fetchPriority(issue);
                             info.stageInfos.add(createdStage(issue));
                             issueInfos.add(info);
-                            if (execCtx.isVerbose()) {
-                                LOG.info(info.toString());
-                            }
+                            this.execCtx.log("ISSUE INFO: {}", info);
                     });
                 }
+                this.execCtx.log("total: {} - count: {}", total, count);
             } while (total != count);
         } catch (final IOException e) {
             throw new JiraAnalyzeException(e);
         }
         exportAsCsv(issueInfos, header);
     }
-
+    
     StageInfo createdStage(final Issue issue) {
         assert issue != null;
         final DateTime creationDateTime = issue.getCreationDate();
@@ -238,7 +235,7 @@ public class IssueTransitionFetcher implements Command {
     }
     
     Optional<String> getQuery() {
-        if (this.query == null || this.query.size() == 0) {
+        if (this.query == null || this.query.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(this.query.stream().collect(joining(" ")));

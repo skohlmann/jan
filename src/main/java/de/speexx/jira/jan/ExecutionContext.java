@@ -24,10 +24,13 @@ import com.beust.jcommander.Parameter;
 import de.speexx.jira.jan.app.Application;
 import java.net.URI;
 import java.net.URISyntaxException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ExecutionContext {
     
     private final static String MAIN_CONFIG_FILENAME = Application.APPLICATION_NAME + ".config";
+    private static final Logger LOG = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
     
     @Parameter(names = {"-p", "--password"}, description = "JIRA connection password.")
     private String password;
@@ -90,5 +93,11 @@ public class ExecutionContext {
     
     public boolean isVerbose() {
         return this.verbose;
+    }
+
+    public void log(final String message, final Object... params) {
+        if (isVerbose()) {
+            LOG.info(message, params);
+        }
     }
 }
