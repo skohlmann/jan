@@ -20,7 +20,6 @@ package de.speexx.jira.jan.command.transition;
 import com.atlassian.jira.rest.client.api.IssueRestClient;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.SearchRestClient;
-import com.atlassian.jira.rest.client.api.domain.BasicPriority;
 import com.atlassian.jira.rest.client.api.domain.ChangelogGroup;
 import com.atlassian.jira.rest.client.api.domain.ChangelogItem;
 import com.atlassian.jira.rest.client.api.domain.Issue;
@@ -44,7 +43,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
@@ -55,7 +53,6 @@ import static org.apache.commons.csv.CSVFormat.RFC4180;
 import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.joining;
 
 
@@ -252,7 +249,7 @@ public class IssueTransitionFetcher implements Command {
         if (issue != null) {
             final IssueType type = issue.getIssueType();
             if (type != null) {
-                return type.getName().toLowerCase(Locale.ENGLISH).intern();
+                return type.getName().intern();
             }
         }
         return null;
@@ -262,7 +259,7 @@ public class IssueTransitionFetcher implements Command {
         if (issue != null) {
             final Resolution resolution = issue.getResolution();
             if (resolution != null) {
-                return resolution.getName().toLowerCase(Locale.ENGLISH).intern();
+                return resolution.getName().intern();
             }
         }
         return null;
