@@ -20,6 +20,7 @@ package de.speexx.jira.jan.command.transition;
 import com.atlassian.jira.rest.client.api.IssueRestClient;
 import com.atlassian.jira.rest.client.api.JiraRestClient;
 import com.atlassian.jira.rest.client.api.SearchRestClient;
+import com.atlassian.jira.rest.client.api.domain.BasicPriority;
 import com.atlassian.jira.rest.client.api.domain.ChangelogGroup;
 import com.atlassian.jira.rest.client.api.domain.ChangelogItem;
 import com.atlassian.jira.rest.client.api.domain.Issue;
@@ -44,6 +45,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -53,6 +55,7 @@ import static org.apache.commons.csv.CSVFormat.RFC4180;
 import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.joining;
 
 
@@ -104,7 +107,7 @@ public class IssueTransitionFetcher implements Command {
                             info.key = issue.getKey();
                             info.resolution = fetchResolution(issue);
                             info.priority = fetchPriority(issue);
-                            info.stageInfos.add(createdStage(issue));
+                            info.created = fetchCreationDateTime(issue);
                             issueInfos.add(info);
                             this.execCtx.log("ISSUE INFO: {}", info);
                     });
@@ -116,22 +119,19 @@ public class IssueTransitionFetcher implements Command {
         }
         exportAsCsv(issueInfos, header);
     }
-    
-    StageInfo createdStage(final Issue issue) {
-        assert issue != null;
-        final DateTime creationDateTime = issue.getCreationDate();
-        final StageInfo si = new StageInfo();
-        si.stageStart = createLocalDateTime(creationDateTime);
-        si.stageName = CREATED_STAGE;
-        return si;
-    }
 
+    LocalDateTime fetchCreationDateTime(final Issue issue) {
+        assert Objects.nonNull(issue);
+        return createLocalDateTime(issue.getCreationDate());
+    }
+    
     String fetchPriority(final Issue issue) {
-        return issue.getPriority().getName().toLowerCase(Locale.ENGLISH);
+        assert Objects.nonNull(issue);
+        return issue.getPriority().getName();
     }
 
     Optional<IssueInfo> handleChangeLog(final Iterable<ChangelogGroup> changeLogs, final Issue issue) {
-        assert issue != null;
+        assert Objects.nonNull(issue);
 
         if (changeLogs != null) {
             final IssueInfo info = new IssueInfo();
@@ -144,7 +144,7 @@ public class IssueTransitionFetcher implements Command {
 
                         final String name = item.getToString();
                         if (name != null) {
-                            si.stageName = name.toLowerCase(Locale.ENGLISH);
+                            si.stageName = name;
                             si.stageStart = extractChangeLogCreateDateToAsDateTime(changeLog);
                             info.stageInfos.add(si);
                         }
@@ -161,7 +161,7 @@ public class IssueTransitionFetcher implements Command {
     void exportAsCsv(final List<IssueInfo> issues, final AtomicBoolean doHeader) {
         try (final CSVPrinter csvPrinter = new CSVPrinter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), RFC4180)) {
                         
-            final String[] header = new String[] {"id", "type", "priority", "resolution", "creation-date", "stage", "stage-duration"};
+            final String[] header = new String[] {"issue-key", "type", "issue-creation-datetime", "priority", "resolution", "stage", "stage-enter-datetime", "stage-duration"};
             
             if (!doHeader.get()) {
                 csvPrinter.printRecord((Object[]) header);
@@ -174,13 +174,13 @@ public class IssueTransitionFetcher implements Command {
                     final String[] values = new String[header.length];
                     values[0] = info.key;
                     values[1] = info.issueType;
-                    values[2] = info.priority;
-                    values[3] = resolutionAdjustment(info);
-
-                    values[4] = DateTimeFormatter.ISO_DATE_TIME.format(stageDuration.stageStart);
+                    values[2] = DateTimeFormatter.ISO_DATE_TIME.format(info.created);
+                    values[3] = info.priority;
+                    values[4] = resolutionAdjustment(info);
 
                     values[5] = "" + stageDuration.stageName;
-                    values[6] = "" + stageDuration.stageDuration.toMinutes();
+                    values[6] = DateTimeFormatter.ISO_DATE_TIME.format(stageDuration.stageStart);
+                    values[7] = "" + stageDuration.getDurationSeconds();
 
                     try {
                         csvPrinter.printRecord((Object[]) values);
@@ -196,17 +196,7 @@ public class IssueTransitionFetcher implements Command {
     } 
 
     static String resolutionAdjustment(final IssueInfo info) {
-        return info.resolution != null ? info.resolution : "---";
-    }
-
-    LocalDateTime findCreationDate(final List<StageInfo> infos) {
-        for (final StageInfo info : infos) {
-            if (CREATED_STAGE.equals(info.stageName)) {
-                return info.stageStart;
-            }
-        }
-        
-        return null;
+        return info.resolution != null ? info.resolution : "";
     }
 
     LocalDateTime extractChangeLogCreateDateToAsDateTime(final ChangelogGroup changeLog) {
@@ -283,27 +273,31 @@ public class IssueTransitionFetcher implements Command {
         String key;
         String priority;
         String resolution;
+        LocalDateTime created;
         List<StageInfo> stageInfos = new ArrayList<>();
 
         @Override
         public String toString() {
-            return "IssueInfo{" + "issueType=" + issueType + ", key=" + key + ", resolution=" + resolution + ", priority: " + priority + ", stageInfos=" + stageInfos + '}';
+            return "IssueInfo{" + "issueType=" + issueType + ", key=" + key + ", priority=" + priority + ", resolution=" + resolution + ", created=" + created + ", stageInfos=" + stageInfos + '}';
         }
-        
+
         public List<StageDuration> stageInfoAsDuration() {
-            this.stageInfos.sort((final StageInfo si1, final StageInfo si2) -> si1.stageStart.compareTo(si2.stageStart));
-            
-            final List<StageDuration> retval = new ArrayList<>();
-            LocalDateTime lastStart = this.stageInfos.get(0).stageStart;
-            for (final StageInfo si : this.stageInfos) {
-                final StageDuration sd = new StageDuration();
-                sd.stageName = si.stageName;
-                sd.stageStart = si.stageStart;
-                sd.stageDuration = Duration.between(lastStart, si.stageStart);
-                lastStart = si.stageStart;
-                retval.add(sd);
+            final List<StageInfo> workingList = new ArrayList<>(this.stageInfos);
+            final List<StageDuration> retval = new ArrayList<>(workingList.size());
+
+            if (!workingList.isEmpty()) {
+                workingList.sort((final StageInfo si1, final StageInfo si2) -> si1.stageStart.compareTo(si2.stageStart));
+                LocalDateTime lastStart = this.created;
+
+                for (final StageInfo si : workingList) {
+                    final StageDuration sd = new StageDuration();
+                    sd.stageName = si.stageName;
+                    sd.stageStart = si.stageStart;
+                    sd.stageDuration = Duration.between(lastStart, si.stageStart);
+                    lastStart = si.stageStart;
+                    retval.add(sd);
+                }
             }
-            retval.sort((final StageDuration sd1, final StageDuration sd2) -> sd1.stageStart.compareTo(sd2.stageStart));
             return retval;
         }
     }
@@ -313,7 +307,11 @@ public class IssueTransitionFetcher implements Command {
 
         @Override
         public String toString() {
-            return "StageDuration{" + "stageStart=" + stageStart + ", stageName=" + stageName + ", stageDuration=" + stageDuration.toMinutes() + "}";
+            return "StageDuration{" + "stageStart=" + stageStart + ", stageName=" + stageName + ", stageDuration=" + this.stageDuration + "}";
+        }
+        
+        public long getDurationSeconds() {
+            return this.stageDuration.toMillis() / 1_000;
         }
     }
     
