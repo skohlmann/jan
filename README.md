@@ -1,7 +1,7 @@
-JIRA ANalyze
+Jira ANalyze
 ============
 
-`jan` the JIRA ANlyze tool is a simple command line tool to extract
+`jan` the Jira ANalyze tool is a simple command line tool to extract
 information from JIRA which are not fetchable via JIRA in a structured way.
 
 *NOTE:* The tool is in early development stage so please use on your own risk.
