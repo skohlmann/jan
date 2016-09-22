@@ -3,8 +3,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.speexx.jira.jan</groupId>
     <artifactId>jan-core</artifactId>
-    <version>1-SNAPSHOT</version>
+    <version>1</version>
     <packaging>jar</packaging>
+    
+    <name>jan</name>
+    <url>https://github.com/skohlmann/jan</url>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>

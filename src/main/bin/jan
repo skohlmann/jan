@@ -14,9 +14,17 @@ function source_dir {
 
 source_dir
 
-JAN_SECURE=-Djavax.net.ssl.trustStore=${HOME}/.jan/cacert
+if [ -z ${JAN_TRUST_STORE+x} ]; then
+    export JAVA_OPTS=-Djavax.net.ssl.trustStore="\"${HOME}/.jan/cacert\""
+else
+    export JAVA_OPTS=-Djavax.net.ssl.trustStore="\"${JAN_TRUST_STORE}\""
+fi
 
-JAVA_OPTS="-Djava.util.logging.config.file=${DIR}/etc/logging.properties ${JAVA_OPTS}"
+echo JAVA_OPTS: ${JAVA_OPTS}
+
+JAVA_OPTS="-Djava.util.logging.config.file=\"${DIR}/etc/logging.properties\" ${JAVA_OPTS}"
 JAVA_OPTS="-Dorg.slf4j.simpleLogger.defaultLogLevel=warn ${JAVA_OPTS}"
 
-java ${JAVA_OPTS} ${JAN_SECURE} -cp "$DIR/lib/*" de.speexx.jira.jan.app.Application $*
+echo ${JAVA_OPTS}
+
+java "${JAVA_OPTS}" -cp "$DIR/lib/*" de.speexx.jira.jan.app.Application $*
