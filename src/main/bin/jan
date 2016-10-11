@@ -15,12 +15,14 @@ function source_dir {
 source_dir
 
 if [ -z ${JAN_TRUST_STORE+x} ]; then
-    export JAVA_OPTS=-Djavax.net.ssl.trustStore="\"${HOME}/.jan/cacert\" ${JAVA_OPTS}"
+    export JAVA_OPTS="-Djavax.net.ssl.trustStore=\"${HOME}/.jan/cacert\" ${JAVA_OPTS}"
 else
-    export JAVA_OPTS=-Djavax.net.ssl.trustStore="\"${JAN_TRUST_STORE}\" ${JAVA_OPTS}"
+    export JAVA_OPTS="-Djavax.net.ssl.trustStore=\"${JAN_TRUST_STORE}\" ${JAVA_OPTS}"
 fi
 
 JAVA_OPTS="-Djava.util.logging.config.file=\"${DIR}/etc/logging.properties\" ${JAVA_OPTS}"
 JAVA_OPTS="-Dorg.slf4j.simpleLogger.defaultLogLevel=warn ${JAVA_OPTS}"
+
+echo $JAVA_OPTS
 
 java "${JAVA_OPTS}" -cp "$DIR/lib/*" de.speexx.jira.jan.app.Application $*
