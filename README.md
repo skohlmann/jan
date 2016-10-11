@@ -86,7 +86,7 @@ the command line interpreter (I use `bash` on a Mac).
 >
 > Get the SSL certificate with the following command line:
 >
-> `> openssl x509 -in <(openssl s_client -connect www.google.com:443 -prexit 2>/dev/null)`
+> `> openssl s_client -connect www.google.com:443 < /dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > ~/public.crt`
 >
 > The domain name and port (`www.google.com:443`) may differ on your system.
 > Please contact your system administrator to get the correct data.
@@ -130,11 +130,9 @@ the command line interpreter (I use `bash` on a Mac).
 > `> cd`<br />
 > `> mkdir .jan`</br />
 >
-> Copy the certificate into a file (e.g. `~/cert`)
->
 > Now create the trust store with the following command line:
 >
-> `> keytool -v -import -file ~/cert -alias jira -keystore ~/.jan/cacert -storepass changeit`
+> `> keytool -v -import -file ~/public.crt -alias jira -keystore ~/.jan/cacert -storepass changeit`
 >
 > That's it. If all was done fine, the JIRA `https` connections with `jan` will
 > work fine. In case of additional trouble please contact your system administrator.
