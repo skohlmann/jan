@@ -49,7 +49,7 @@ of the subcommands against a remote JIRA instance.
 
 ## Subcommands
 
-### `transition`
+### `transitions`
 
 Fetch all relevant transition information for the tickets and print
 the values as [CSV](https://en.wikipedia.org/wiki/Comma-separated_values "CSV at Wikipedia")
