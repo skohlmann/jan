@@ -142,6 +142,7 @@ public class IssueTransitionFetcher implements Command {
                         final String name = item.getToString();
                         if (name != null) {
                             si.stageName = name;
+                            si.fromStageName = item.getFromString();
                             si.stageStart = extractChangeLogCreateDateToAsDateTime(changeLog);
                             info.stageInfos.add(si);
                         }
@@ -158,7 +159,7 @@ public class IssueTransitionFetcher implements Command {
     void exportAsCsv(final List<IssueInfo> issues, final AtomicBoolean doHeader) {
         try (final CSVPrinter csvPrinter = new CSVPrinter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), RFC4180)) {
                         
-            final String[] header = new String[] {"issue-key", "type", "issue-creation-datetime", "priority", "resolution", "stage", "stage-enter-datetime", "stage-duration"};
+            final String[] header = new String[] {"issue-key", "type", "issue-creation-datetime", "priority", "resolution", "from-stage", "stage", "stage-enter-datetime", "stage-duration"};
             
             if (!doHeader.get()) {
                 csvPrinter.printRecord((Object[]) header);
@@ -175,9 +176,10 @@ public class IssueTransitionFetcher implements Command {
                     values[3] = info.priority;
                     values[4] = resolutionAdjustment(info);
 
-                    values[5] = "" + stageDuration.stageName;
-                    values[6] = DateTimeFormatter.ISO_DATE_TIME.format(stageDuration.stageStart);
-                    values[7] = "" + stageDuration.getDurationSeconds();
+                    values[5] = stageDuration.fromStageName != null ? "" + stageDuration.fromStageName : "";
+                    values[6] = "" + stageDuration.stageName;
+                    values[7] = DateTimeFormatter.ISO_DATE_TIME.format(stageDuration.stageStart);
+                    values[8] = "" + stageDuration.getDurationSeconds();
 
                     try {
                         csvPrinter.printRecord((Object[]) values);
@@ -289,6 +291,7 @@ public class IssueTransitionFetcher implements Command {
                 for (final StageInfo si : workingList) {
                     final StageDuration sd = new StageDuration();
                     sd.stageName = si.stageName;
+                    sd.fromStageName = si.fromStageName;
                     sd.stageStart = si.stageStart;
                     sd.stageDuration = Duration.between(lastStart, si.stageStart);
                     lastStart = si.stageStart;
@@ -304,7 +307,7 @@ public class IssueTransitionFetcher implements Command {
 
         @Override
         public String toString() {
-            return "StageDuration{" + "stageStart=" + stageStart + ", stageName=" + stageName + ", stageDuration=" + this.stageDuration + "}";
+            return "StageDuration{" + "stageStart=" + stageStart + ", fromStageName=" + fromStageName + ", stageName=" + stageName + ", stageDuration=" + this.stageDuration + "}";
         }
         
         public long getDurationSeconds() {
@@ -315,10 +318,12 @@ public class IssueTransitionFetcher implements Command {
     static class StageInfo {
         LocalDateTime stageStart;
         String stageName;
+        String fromStageName;
 
         @Override
         public String toString() {
-            return "StageInfo{" + "stageStart=" + stageStart + ", stageName=" + stageName + '}';
+            return "StageInfo{" + "stageStart=" + stageStart + ", stageName=" + stageName + ", fromStageName=" + fromStageName + '}';
         }
+
     }
 }
