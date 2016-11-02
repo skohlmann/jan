@@ -324,6 +324,5 @@ public class IssueTransitionFetcher implements Command {
         public String toString() {
             return "StageInfo{" + "stageStart=" + stageStart + ", stageName=" + stageName + ", fromStageName=" + fromStageName + '}';
         }
-
     }
 }
