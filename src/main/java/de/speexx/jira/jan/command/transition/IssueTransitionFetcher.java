@@ -73,7 +73,7 @@ public class IssueTransitionFetcher implements Command {
     @Parameter(description = "The query for the transitions. "
                            + "The query should be surrounded with quotation marks or apostrophs. "
                            + "Quotation marks inside the query might be escaped/protected "
-                           + "by backslash (reversed solidus) charakter.")
+                           + "by backslash (reversed solidus) character.")
     private List<String> query;
 
     @Override

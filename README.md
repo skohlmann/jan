@@ -49,6 +49,24 @@ of the subcommands against a remote JIRA instance.
 
 ## Subcommands
 
+### `count`
+
+Returns the count of the results of a JQL query. The result is printed to
+standard out.
+
+Example:
+
+        > jan --password secret --login jirauser --jira https://example.com:8443 count \
+              'project = MyProject and type = Bug and status = Closed'
+
+The query prints a numeric value like `1234`.
+
+### `issueanalyze`
+
+Analyze the fields returning by the given JQL query for field names and field types.
+
+The return information is formatted in JSON and printed to standard out.
+
 ### `transitions`
 
 Fetch all relevant transition information for the tickets and print

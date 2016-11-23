@@ -66,11 +66,12 @@ public class Application {
     void run(final String... args) {
         final JCommander jc = new JCommander(context());
         this.commands.forEach(cmd -> jc.addCommand(cmd));
-        jc.setProgramName(APPLICATION_NAME);
 
         jc.parse(args);
         
         if (context().isHelp()) {
+            jc.setProgramName(APPLICATION_NAME);
+            jc.setColumnSize(USAGE_COLUMN_SIZE);
             jc.usage();
             return;
         }
@@ -78,6 +79,7 @@ public class Application {
         final Optional<Command> cmd = findCommand(jc);
         cmd.orElse(new HelpCommand(jc)).execute();
     }
+    static final int USAGE_COLUMN_SIZE = 80;
     
     Optional<Command> findCommand(final JCommander jc) {
         final String parsedCommand = jc.getParsedCommand();

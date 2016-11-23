@@ -86,7 +86,7 @@ public class ExecutionContext {
         try {
             final JiraRestClientFactory factory = new AsynchronousJiraRestClientFactory();
             return factory.createWithBasicHttpAuthentication(new URI(getJiraUri()), getUser(), getPassword());
-        } catch (URISyntaxException ex) {
+        } catch (final URISyntaxException ex) {
             throw new JiraAnalyzeException(ex);
         }
     }
