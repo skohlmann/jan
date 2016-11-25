@@ -15,17 +15,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.speexx.jira.jan;
+package de.speexx.jira.jan.service.issue;
 
-import javax.inject.Qualifier;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import com.atlassian.jira.rest.client.api.NamedEntity;
+import java.util.Optional;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+class NamedEntityValueFetcher implements ValueFetcher {
 
-@Qualifier
-@Retention(RUNTIME)
-@Target({FIELD, METHOD})
-public @interface Config {}
+    @Override
+    public Optional<Object> getValue(final Object dataSource) {
+        if (dataSource == null) {
+            return Optional.empty();
+        }
+        if (dataSource instanceof NamedEntity) {
+            return Optional.ofNullable(((NamedEntity) dataSource).getName());
+        }
+        throw new UnsupportedSourceTypeException("Value type " + dataSource.getClass() + " not supported by " + this.getClass().getName());
+    }
+}

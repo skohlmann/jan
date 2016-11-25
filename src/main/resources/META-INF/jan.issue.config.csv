@@ -1,0 +1,14 @@
+fieldname,fieldname-alias,issue-method,ignore,value-fetcher-type
+issuekey,key,getKey,true,de.speexx.jira.jan.service.issue.ReturnValueFetcher
+createddate,,getCreationDate,true,de.speexx.jira.jan.service.issue.DateTimeValueFetcher
+resolution,,getResolution,false,de.speexx.jira.jan.service.issue.NamedEntityValueFetcher
+reporter,,getReporter,false,de.speexx.jira.jan.service.issue.NamedEntityValueFetcher
+priority,,getPriority,false,de.speexx.jira.jan.service.issue.NamedEntityValueFetcher
+status,,getStatus,false,de.speexx.jira.jan.service.issue.NamedEntityValueFetcher
+project,,getProject,false,de.speexx.jira.jan.service.issue.NamedEntityValueFetcher
+issuetype,type,getIssueType,false,de.speexx.jira.jan.service.issue.NamedEntityValueFetcher
+duedate,,getDueDate,false,de.speexx.jira.jan.service.issue.DateTimeValueFetcher
+updatedate,,getUpdateDate,false,de.speexx.jira.jan.service.issue.DateTimeValueFetcher
+description,,getDescription,false,de.speexx.jira.jan.service.issue.ReturnValueFetcher
+summary,,getSummary,false,de.speexx.jira.jan.service.issue.ReturnValueFetcher
+assignee,,getAssignee,false,de.speexx.jira.jan.service.issue.NamedEntityValueFetcher

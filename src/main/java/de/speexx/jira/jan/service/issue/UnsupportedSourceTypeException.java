@@ -15,17 +15,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.speexx.jira.jan;
+package de.speexx.jira.jan.service.issue;
 
-import javax.inject.Qualifier;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import de.speexx.jira.jan.JiraAnalyzeException;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+class UnsupportedSourceTypeException extends JiraAnalyzeException {
 
-@Qualifier
-@Retention(RUNTIME)
-@Target({FIELD, METHOD})
-public @interface Config {}
+    /**
+     * Creates a new instance of <code>UnsupportedSourceTypeException</code>
+     * without detail message.
+     */
+    public UnsupportedSourceTypeException() {
+    }
+
+    /**
+     * Constructs an instance of <code>UnsupportedSourceTypeException</code> with
+     * the specified detail message.
+     *
+     * @param msg the detail message.
+     */
+    public UnsupportedSourceTypeException(final String msg) {
+        super(msg);
+    }
+}

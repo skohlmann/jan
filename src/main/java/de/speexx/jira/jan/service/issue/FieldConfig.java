@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.speexx.jira.jan;
+package de.speexx.jira.jan.service.issue;
 
 import javax.inject.Qualifier;
 import java.lang.annotation.Retention;
@@ -28,4 +28,4 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Qualifier
 @Retention(RUNTIME)
 @Target({FIELD, METHOD})
-public @interface Config {}
+public @interface FieldConfig {}

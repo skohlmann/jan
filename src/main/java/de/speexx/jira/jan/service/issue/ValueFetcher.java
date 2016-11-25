@@ -15,17 +15,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.speexx.jira.jan;
+package de.speexx.jira.jan.service.issue;
 
-import javax.inject.Qualifier;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import java.util.Optional;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
-
-@Qualifier
-@Retention(RUNTIME)
-@Target({FIELD, METHOD})
-public @interface Config {}
+interface ValueFetcher {
+    
+    Optional<Object> getValue(final Object dataSource) throws UnsupportedSourceTypeException;
+}

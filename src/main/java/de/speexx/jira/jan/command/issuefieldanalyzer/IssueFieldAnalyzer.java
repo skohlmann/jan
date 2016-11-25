@@ -42,7 +42,7 @@ import org.codehaus.jettison.json.JSONObject;
 import static java.util.stream.Collectors.joining;
 
 @Parameters(commandNames = {"issueanalyze"}, commandDescription = "Prints a human readable structure of all fields of the issues fetched for the given JQL query.")
-public class IssueFieldAnalyzer implements Command {
+public final class IssueFieldAnalyzer implements Command {
     
     static final int JSON_PRINT_INDENT = 4;
 

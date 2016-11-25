@@ -15,17 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.speexx.jira.jan;
+package de.speexx.jira.jan.service.issue;
 
-import javax.inject.Qualifier;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import org.junit.jupiter.api.Test;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Qualifier
-@Retention(RUNTIME)
-@Target({FIELD, METHOD})
-public @interface Config {}
+public class ReturnValueFetcherTest {
+    
+    @Test
+    public void ofNonNullValue() {
+        assertTrue(new ReturnValueFetcher().getValue("data").isPresent());
+    }
+
+    @Test
+    public void ofNullValue() {
+        assertFalse(new ReturnValueFetcher().getValue(null).isPresent());
+    }
+}

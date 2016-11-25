@@ -15,17 +15,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
-package de.speexx.jira.jan;
+package de.speexx.jira.jan.command.issuequery;
 
-import javax.inject.Qualifier;
-import java.lang.annotation.Retention;
-import java.lang.annotation.Target;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.expectThrows;
+import org.junit.jupiter.api.Test;
 
-import static java.lang.annotation.ElementType.FIELD;
-import static java.lang.annotation.ElementType.METHOD;
-import static java.lang.annotation.RetentionPolicy.RUNTIME;
+public class StringToFieldNameConverterTest {
+    
+    @Test
+    public void test_simple_convert() {
+        assertEquals("simple", new StringToFieldNameConverter().convert("Simple").asString());
+    }
 
-@Qualifier
-@Retention(RUNTIME)
-@Target({FIELD, METHOD})
-public @interface Config {}
+    @Test
+    public void test_null_parameter() {
+        final Throwable exception = expectThrows(NullPointerException.class, () -> {
+            new StringToFieldNameConverter().convert(null);
+        });
+        assertEquals("Name is null", exception.getMessage());
+    }
+}

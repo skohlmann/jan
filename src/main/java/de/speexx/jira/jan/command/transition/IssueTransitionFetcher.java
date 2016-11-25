@@ -33,6 +33,7 @@ import de.speexx.jira.jan.Command;
 import de.speexx.jira.jan.Config;
 import de.speexx.jira.jan.ExecutionContext;
 import de.speexx.jira.jan.JiraAnalyzeException;
+import de.speexx.jira.jan.service.time.TimeConverterService;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
@@ -66,7 +67,10 @@ public class IssueTransitionFetcher implements Command {
 
     @Inject @Config
     private ExecutionContext execCtx;
-
+    
+    @Inject
+    private TimeConverterService timeConverter;
+    
     @Parameter(names = {"-l", "--limit"}, hidden = true, description = "Fetch size limit.")
     private int fetchLimit = 100;
 
@@ -157,7 +161,8 @@ public class IssueTransitionFetcher implements Command {
     }
 
     void exportAsCsv(final List<IssueInfo> issues, final AtomicBoolean doHeader) {
-        try (final CSVPrinter csvPrinter = new CSVPrinter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), RFC4180)) {
+        try {
+            final CSVPrinter csvPrinter = new CSVPrinter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), RFC4180);
                         
             final String[] header = new String[] {"issue-key", "type", "issue-creation-datetime", "priority", "resolution", "from-stage", "stage", "stage-enter-datetime", "stage-duration"};
             
@@ -188,6 +193,7 @@ public class IssueTransitionFetcher implements Command {
                     }
                 });
             });
+            csvPrinter.flush();
             
         } catch (final IOException e) {
            throw new JiraAnalyzeException(e);
@@ -238,15 +244,9 @@ public class IssueTransitionFetcher implements Command {
     }
     
     LocalDateTime createLocalDateTime(final DateTime dt) {
-        final int year = dt.getYear();
-        final int month = dt.getMonthOfYear();
-        final int day = dt.getDayOfMonth();
-        final int hour = dt.getHourOfDay();
-        final int minute = dt.getMinuteOfHour();
-        final int second = dt.getSecondOfMinute();
-        return LocalDateTime.of(year, month, day, hour, minute, second);
+        return this.timeConverter.jodaDateTimeToJava8LocalDateTime(dt);
     }
-
+    
     String fetchIssueType(final Issue issue) {
         if (issue != null) {
             final IssueType type = issue.getIssueType();
