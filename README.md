@@ -7,24 +7,14 @@ way.
 `jan` is a command based tool which means it comes with a central starting
 command (a.k.a `jan`) and subcommands from command line.
 
-# Table of content
 
-* [Installing `jan`](#installing)
-** [Precondition](#precondition)
-** [Download](#download)
-** [Configure](#configure)
-* [Using `jan`](#using)
-** [Main parameters](#main_parameters)
-** [Subcommands](#subcommands)
-*** [`count`](#subcommand_count)
+# Installing `jan`
 
-# <a id='installing' />Installing `jan`
-
-## <a id='precondition' />Precondition
+## Precondition
 
 `jan` requires a Java 8 runtime environment at least.
 
-## <a id='download' />Download `jan`
+## Download `jan`
 
 Download latest `jan` version from [here](http://www.speexx.de/jan/LATEST).
 
@@ -34,13 +24,13 @@ Unzip the archive in a folder of your choice with
 
 were X is the version of `jan`
 
-## <a id='configure' />Configure
+## Configure
 
 Add the `jan` directory to your `PATH` environment.
 
-# <a id='using' />Using `jan`
+# Using `jan`
 
-## <a id='main_parameters' />Main parameters
+## Main parameters
 
 `jan`supports 3 main parameters. The main parameters supports the connection 
 of the subcommands against a remote JIRA instance.
@@ -56,9 +46,9 @@ of the subcommands against a remote JIRA instance.
        JIRA connection user.
 
 
-## <a id='subcommands' />Subcommands
+## Subcommands
 
-### <a id='subcommand_count' />`count`
+### `count`
 
 Returns the count of the results of a JQL query. The result is printed to
 standard out.
