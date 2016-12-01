@@ -9,15 +9,22 @@ command (a.k.a `jan`) and subcommands from command line.
 
 # Table of content
 
-TBD
+* [Installing `jan`](#installing)
+** [Precondition](#precondition)
+** [Download](#download)
+** [Configure](#configure)
+* [Using `jan`](#using)
+** [Main parameters](#main_parameters)
+** [Subcommands](#subcommands)
+*** [`count`](#subcommand_count)
 
-# Installing `jan`
+# <a id='installing' />Installing `jan`
 
-## Precondition
+## <a id='precondition' />Precondition
 
 `jan` requires a Java 8 runtime environment at least.
 
-## Download `jan`
+## <a id='download' />Download `jan`
 
 Download latest `jan` version from [here](http://www.speexx.de/jan/LATEST).
 
@@ -27,13 +34,13 @@ Unzip the archive in a folder of your choice with
 
 were X is the version of `jan`
 
-# Configure
+## <a id='configure' />Configure
 
 Add the `jan` directory to your `PATH` environment.
 
-# Running `jan`
+# <a id='using' />Using `jan`
 
-## Command parameters
+## <a id='main_parameters' />Main parameters
 
 `jan`supports 3 main parameters. The main parameters supports the connection 
 of the subcommands against a remote JIRA instance.
@@ -49,9 +56,9 @@ of the subcommands against a remote JIRA instance.
        JIRA connection user.
 
 
-## Subcommands
+## <a id='subcommands' />Subcommands
 
-### `count`
+### <a id='subcommand_count' />`count`
 
 Returns the count of the results of a JQL query. The result is printed to
 standard out.
