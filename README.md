@@ -4,10 +4,12 @@
 information from JIRA which are not fetchable direct via JIRA in a structured
 way.
 
-*NOTE:* The tool is in early development stage so please use on your own risk.
-
 `jan` is a command based tool which means it comes with a central starting
 command (a.k.a `jan`) and subcommands from command line.
+
+# Table of content
+
+TBD
 
 # Installing `jan`
 
@@ -66,6 +68,121 @@ The query prints a numeric value like `1234`.
 Analyze the fields returning by the given JQL query for field names and field types.
 
 The return information is formatted in JSON and printed to standard out.
+
+### `issuequery`
+
+A general purpose command to get JQL query results from JIRA in a CSV format. The
+command support the current field values of the issues as well as the changelog
+history of fields.
+
+#### Command line parameter
+
+The `issuequery` support 4 command line parameters to configure the query and the
+result.
+
+##### `--current`
+
+The parameter takes a list of fields and field pathes to get the current values.
+The parameter values are space delimited. In case of a field name with a space,
+the parameter value must be surrounded by quotation mark characters (`U-0022`).
+
+In JIRA fields can be nested. This means a field can have additional fields. In
+such case the field must be described with a a field name path. The first part
+of the field name path is the *root* field. An undefined list of child path
+elements can follow. To distinguish between the path elements two colon characters
+are used.
+
+For example:
+
+To get the *reporter* of an issue the parameter value looks like the following:
+
+        reporter
+
+To get the name of the *creator* of an issue the parameter looks like the following:
+
+        creator::name
+
+The parameter value referes to the issue field with name *creator* and the attribute
+*name*. 
+
+The reason for the is the field type. The *reporter* is a core field in a JIRA
+issue where the *creator* is not core field.
+
+The fields *key/issuekey* and *createdDate* are implicit and must not been
+defined.
+
+The parameter value is case insensitive.
+
+##### `--history`
+
+The parameter takes a list of field names of the changelog to be exported.
+E.g. if the field name is 
+
+        summary
+
+the result contains a list of *from* and *to* values of the summary. Additonal
+the output may contain the timestamp of the change and/or the duration from
+the previous change. See more at `--temporal` command line parameter.
+
+The `--history` parameter doesn't support field name pathes.
+
+The parameter value is case insensitive.
+
+##### `--temporal`
+
+The parameter is only required if and only if `--history` field are defined.
+The parameter defines the temporal information in the output. It has 4 possible
+values.
+
+<table>
+  <tr><th>Parameter value</th><th>Description</th><th>Default</th><th>Abbreviation<</th></tr>
+  <tr><td><tt>none</tt></td><td>No temporal output is available for the changed field.</td><td>no</td><td>`n`</td></tr>
+  <tr><td><tt>time</tt></td><td>The timestamp of the change is part of the output.</td><td>no</td><td>`t`</td></tr>
+  <tr>
+    <td><tt>duration</tt></td><td>The duration in milliseconds since the previous change is part of the output.
+      For the first duration value the value of <em>createdData</em> of the issue is used.<br />
+      Duration is a simplification for working with changelog information in dependend tools of the chain.
+    </td>
+    <td>yes</td><td>`d`</td></tr>
+  <tr><td><tt>both</tt></td><td>Both temporal information (<tt>time</tt> and <tt>duration</tt>) are part of the output.</td><td>no</td><td>`b`</td></tr>
+</table>
+
+##### `--query`
+
+JQL query to get the data from JIRA.
+
+#### Output
+
+The implementation currently writes the output as [CSV](https://en.wikipedia.org/wiki/Comma-separated_values "CSV at Wikipedia")
+format ([RFC 4180](https://www.ietf.org/rfc/rfc4180.txt)) with header to `stdout`. 
+The first column should contain the issue *key*. The second column should contain
+the *createdDate* value. It is recom
+
+In case of changelog information in the output the names of the headers will have
+a prefix to the field name.
+
+<table>
+    <caption>CSV changelog output prefix for example field name "issuetype"</caption>
+    <tr><th>Column type</th><th>Prefix</th><th>Example</th></tr>
+    <tr><td>From value</td><td><tt>from_</tt></td><td><tt>from_issuetype</tt></td></tr>
+    <tr><td>Change date value</td><td><tt>at_</tt></td><td><tt>at_issuetype</tt></td></tr>
+    <tr><td>Duration value</td><td><tt>duration_</tt></td><td><tt>duration_issuetype</tt></td></tr>
+    <tr><td>To value</td><td><tt>to_</tt></td><td><tt>to_issuetype</tt></td></tr>
+</table>
+
+Every changelog entry gets an own line in the CSV file. In case of more then one
+changelog field to export, every block gets its own lines but the blocks which
+are not the actual changelog field contains not values for the column.
+
+The full set of current fields are available for every changelog line.
+
+##### Datetime output
+
+In case of datetime information the datetime format follows the human readable
+[ISO 8601](https://en.wikipedia.org/wiki/ISO_8601 "ISO 8601 at Wikipedia") format
+with milliseconds but no timezone information.
+
+E.g. `2016-12-01T18:12:45.432`
 
 ### `transitions`
 
