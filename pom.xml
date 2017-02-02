@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.speexx.jira.jan</groupId>
     <artifactId>jan-core</artifactId>
-    <version>6-SNAPSHOT</version>
+    <version>6</version>
     <packaging>jar</packaging>
     
     <name>jan</name>
@@ -32,13 +32,6 @@
             <artifactId>jira-rest-java-client-core</artifactId>
             <version>${jira.rest-client.version}</version>
         </dependency>
-<!--
-        <dependency>
-            <groupId>com.atlassian.jira.plugins</groupId>
-            <artifactId>jira-greenhopper-api</artifactId>
-            <version>${jira.greenhopper.version}</version>
-        </dependency>
--->
         <dependency>
             <groupId>com.atlassian.fugue</groupId>
             <artifactId>fugue</artifactId>

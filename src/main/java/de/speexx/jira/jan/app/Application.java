@@ -37,6 +37,7 @@ public class Application {
     private static final Logger LOG = LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
     public static final String APPLICATION_NAME = "jan";
     private final static ExecutionContext MAIN_CONTEXT = new ExecutionContext();
+    static final int USAGE_COLUMN_SIZE = 80;
 
     @Inject
     private Instance<Command> commands;
@@ -68,7 +69,7 @@ public class Application {
         this.commands.forEach(cmd -> jc.addCommand(cmd));
 
         jc.parse(args);
-        
+
         if (context().isHelp()) {
             jc.setProgramName(APPLICATION_NAME);
             jc.setColumnSize(USAGE_COLUMN_SIZE);
@@ -79,7 +80,6 @@ public class Application {
         final Optional<Command> cmd = findCommand(jc);
         cmd.orElse(new HelpCommand(jc)).execute();
     }
-    static final int USAGE_COLUMN_SIZE = 80;
     
     Optional<Command> findCommand(final JCommander jc) {
         final String parsedCommand = jc.getParsedCommand();

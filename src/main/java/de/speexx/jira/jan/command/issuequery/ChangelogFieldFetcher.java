@@ -47,17 +47,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Inject;
 import static java.util.stream.Collectors.joining;
 
-@Parameters(commandNames = {"issuequery"}, hidden= true, commandDescription = "Fetch the changelog for the required fields. The fields KEY and CreateDate are always fetched.")
+@Parameters(commandNames = {"issuequery"}, commandDescription = "Fetch the changelog for the required fields. The fields KEY and CreateDate are always fetched.")
 public final class ChangelogFieldFetcher implements Command {
 
-    private FieldName keyFieldName;
     private FieldName issueKeyFieldName;
-    private FieldName typeFieldName;
-    private FieldName issueTypeFieldName;
     private FieldName createdDateFieldName;
-    
-    private Set<FieldName> fieldNames = new HashSet<>();
-    
+
     @Inject @Config
     private ExecutionContext execCtx;
     
@@ -131,6 +126,9 @@ public final class ChangelogFieldFetcher implements Command {
                            + "'" + TEMPORAL_VALUE_TIME_LONG + "'.")
     private TemporalChangeOutput temporalOutput = TemporalChangeOutput.DURATION;
 
+    @Parameter(names = {"-n", "--noheader"}, description = "Noheader output if given.")
+    private boolean noHeader = false;
+
     @Override
     public void execute() {
         createFieldNames();
@@ -140,7 +138,7 @@ public final class ChangelogFieldFetcher implements Command {
         int startIndex = 0;
         int total = -1;
         
-        final AtomicBoolean header = new AtomicBoolean(true);
+        final AtomicBoolean header = new AtomicBoolean(!this.noHeader);
         try (final JiraRestClient restClient = this.execCtx.newJiraClient()) {
             do {
                 final String q = getQuery().orElseThrow(() -> new JiraAnalyzeException("No query given for fetching transitions"));
@@ -157,7 +155,6 @@ public final class ChangelogFieldFetcher implements Command {
                             = this.issueFieldService.fetchCurrentIssueData(issue, issueData, this.currentFieldNames);
                     final IssueData withHistoricalIssueData
                             = this.issueFieldService.fetchHistoricalIssueData(issue, currentIssueData, this.historyFieldNames);
-//                    System.out.format("DATA: %s%n", withHistoricalIssueData);
                     
                     this.csvCreator.printIssueData(withHistoricalIssueData, this.historyFieldNames, this.currentFieldNames, this.temporalOutput, header);
                 }
@@ -234,19 +231,7 @@ public final class ChangelogFieldFetcher implements Command {
     }
     
     void createFieldNames() {
-        this.keyFieldName = this.fieldNameService.createFieldName("key");
-        this.fieldNames.add(this.keyFieldName);
-
         this.issueKeyFieldName = this.fieldNameService.createFieldName("issuekey");
-        this.fieldNames.add(this.issueKeyFieldName);
-
-        this.typeFieldName = this.fieldNameService.createFieldName("type");
-        this.fieldNames.add(this.typeFieldName);
-
-        this.issueTypeFieldName = this.fieldNameService.createFieldName("issuetype");
-        this.fieldNames.add(this.issueTypeFieldName);
-
         this.createdDateFieldName = this.fieldNameService.createFieldName("createddate");
-        this.fieldNames.add(this.createdDateFieldName);
     }
 }

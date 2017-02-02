@@ -38,14 +38,6 @@ public class HistoricalDataEntryTest {
     }
 
     @Test
-    public void test_creation_with_equals_from_to() {
-        final Throwable exception = expectThrows(IllegalArgumentException.class, () -> {
-            new HistoricalDataEntry("from", now(), "from");
-        });
-        assertEquals("to and from value are equal: from", exception.getMessage());
-    }
-
-    @Test
     public void test_creation_with_change_date_null() {
         final Throwable exception = expectThrows(NullPointerException.class, () -> {
             new HistoricalDataEntry("from", null, "to");

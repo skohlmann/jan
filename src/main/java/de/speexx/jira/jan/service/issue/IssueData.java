@@ -137,9 +137,6 @@ public final class IssueData {
         private final LocalDateTime changeDate;
 
         public HistoricalDataEntry(final String from, final LocalDateTime at, final String to) {
-            if (Objects.equals(from, to)) {
-                throw new IllegalArgumentException("to and from value are equal: " + String.valueOf(to));
-            }
             this.from = from != null ? from.intern() : null;
             this.changeDate = Objects.requireNonNull(at, "Changedate is null");
             this.to = to != null ? to.intern() : null;
