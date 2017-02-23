@@ -74,7 +74,7 @@ public final class ChangelogFieldFetcher implements Command {
     @Parameter(names = {"-l", "--limit"}, hidden = true, description = "Fetch size limit.")
     private int fetchLimit = 100;
 
-    @Parameter(names = {"-q", "-query"},
+    @Parameter(names = {"-q", "--query"},
                required = true,
                variableArity = true,
                description = "The query for the changelog to fetch. "
