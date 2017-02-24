@@ -132,16 +132,16 @@ The parameter defines the temporal information in the output. It has 4 possible
 values.
 
 <table>
-  <tr><th>Parameter value</th><th>Description</th><th>Default</th><th>Abbreviation<</th></tr>
-  <tr><td><tt>none</tt></td><td>No temporal output is available for the changed field.</td><td>no</td><td>`n`</td></tr>
-  <tr><td><tt>time</tt></td><td>The timestamp of the change is part of the output.</td><td>no</td><td>`t`</td></tr>
+  <tr><th>Parameter value</th><th>Description</th><th>Default</th><th>Abbreviation</th></tr>
+  <tr><td><tt>none</tt></td><td>No temporal output is available for the changed field.</td><td>no</td><td><tt>n</tt></td></tr>
+  <tr><td><tt>time</tt></td><td>The timestamp of the change is part of the output.</td><td>no</td><td><tt>t</tt></td></tr>
   <tr>
     <td><tt>duration</tt></td><td>The duration in milliseconds since the previous change is part of the output.
       For the first duration value the value of <em>createdData</em> of the issue is used.<br />
       Duration is a simplification for working with changelog information in dependend tools of the chain.
     </td>
-    <td>yes</td><td>`d`</td></tr>
-  <tr><td><tt>both</tt></td><td>Both temporal information (<tt>time</tt> and <tt>duration</tt>) are part of the output.</td><td>no</td><td>`b`</td></tr>
+    <td>yes</td><td><tt>d</tt></td></tr>
+  <tr><td><tt>both</tt></td><td>Both temporal information (<tt>time</tt> and <tt>duration</tt>) are part of the output.</td><td>no</td><td><tt>b</tt></td></tr>
 </table>
 
 ##### `--query`
