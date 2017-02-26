@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.speexx.jira.jan</groupId>
     <artifactId>jan-core</artifactId>
-    <version>7</version>
+    <version>8-SNAPSHOT</version>
     <packaging>jar</packaging>
     
     <name>jan</name>
