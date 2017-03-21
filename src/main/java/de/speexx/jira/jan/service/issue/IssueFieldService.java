@@ -119,7 +119,6 @@ public final class IssueFieldService {
                     issueData.addCurrentFieldData(this.fieldNameService.createFieldNamePath(name), value);
                 } else {
                     final FieldNamePath original = fetchFieldNamePath(byRoot, id, name);
-                    System.out.format("BY ROOT - ORIGINAL: %s - BY ROOT: %s -  ID: %s - NAME: %s%n", original, byRoot, id, name);
                     if (original != null) {
                         final FieldNamePath withoutRoot = original.getPathWithoutRoot();
                         if (withoutRoot.length() == 0) {
@@ -136,7 +135,6 @@ public final class IssueFieldService {
                             issueData.addCurrentFieldData(original, objValue);
                         }
                     } else {
-                        System.out.format("FIELD NAME: %s%n", name);
                         issueData.addCurrentFieldData(this.fieldNameService.createFieldNamePath(name), value);
                     }
                 }
