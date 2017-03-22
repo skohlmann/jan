@@ -86,8 +86,8 @@ the parameter value must be surrounded by quotation mark characters (`U-0022`).
 In JIRA fields can be nested. This means a field can have additional fields. In
 such case the field must be described with a a field name path. The first part
 of the field name path is the *root* field. An undefined list of child path
-elements can follow. To distinguish between the path elements two colon characters
-are used.
+elements can follow. To distinguish between the path elements two colon (`U+003a`)
+characters are used as field path name delimiter.
 
 For example:
 
@@ -109,6 +109,14 @@ The fields *key/issuekey* and *createdDate* are implicit and must not been
 defined.
 
 The parameter value is case insensitive.
+
+
+###### Header name format
+
+In case of a field name path the name of the header is the same as the field
+path name where the field path name delimiter is replaced with one underscore 
+(`U+005f`) character.
+
 
 ##### `--history`
 
