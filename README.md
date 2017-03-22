@@ -22,7 +22,7 @@ Unzip the archive in a folder of your choice with
 
 > `> unzip jan-X-bin.zip`
 
-were X is the version of `jan`
+where X is the version of `jan`
 
 ## Configure
 
