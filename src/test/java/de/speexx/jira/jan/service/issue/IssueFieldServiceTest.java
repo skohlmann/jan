@@ -47,11 +47,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import javax.enterprise.inject.se.SeContainer;
+import javax.enterprise.inject.se.SeContainerInitializer;
 import org.codehaus.jettison.json.JSONArray;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
 import org.joda.time.DateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -60,7 +60,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 public class IssueFieldServiceTest {
 
-    private WeldContainer weldContainer;
+    private SeContainer seContainer;
     private IssueFieldService issueFieldService;
     private FieldNameService fieldNameService;
     
@@ -167,13 +167,14 @@ public class IssueFieldServiceTest {
     
     @BeforeEach
     public void setupCdi() {
-        this.weldContainer = new Weld().initialize();
-        this.issueFieldService = this.weldContainer.instance().select(IssueFieldService.class).get();
-        this.fieldNameService = this.weldContainer.instance().select(FieldNameService.class).get();
+        final SeContainerInitializer initializer = SeContainerInitializer.newInstance();
+        this.seContainer = initializer.initialize();
+        this.issueFieldService = this.seContainer.select(IssueFieldService.class).get();
+        this.fieldNameService = this.seContainer.select(FieldNameService.class).get();
     }
     
     @AfterEach
     public void teardownCdi() {
-        this.weldContainer.close();
+        this.seContainer.close();
     }
 }

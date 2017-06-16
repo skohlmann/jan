@@ -26,9 +26,9 @@ import java.util.Map;
 import java.util.Optional;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.se.SeContainer;
+import javax.enterprise.inject.se.SeContainerInitializer;
 import javax.inject.Inject;
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,8 +48,9 @@ public class Application {
     }
 
     public static final void main(final String... args) {        
-        final Weld weld = new Weld();
-        try (final WeldContainer container = weld.initialize()) {
+        final SeContainerInitializer initializer = SeContainerInitializer.newInstance();
+        
+        try (final SeContainer container = initializer.initialize()) {
             container.select(Application.class).get().run(args);
         } catch (final Throwable t) {
             if (!MAIN_CONTEXT.isVerbose()) {
@@ -62,7 +63,7 @@ public class Application {
             System.exit(1);
         }
         System.exit(0);
-    }
+    }   
     
     void run(final String... args) {
         final JCommander jc = new JCommander(context());
