@@ -17,7 +17,7 @@
  */
 package de.speexx.jira.jan.service.issue;
 
-import static org.junit.jupiter.api.Assertions.expectThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +30,7 @@ public class FieldNameTest {
    
     @Test
     public void test_null_creation() {
-        final Throwable exception = expectThrows(NullPointerException.class, () -> {
+        final Throwable exception = assertThrows(NullPointerException.class, () -> {
             new FieldName(null);
         });
         assertEquals("Name element is null", exception.getMessage());
@@ -38,7 +38,7 @@ public class FieldNameTest {
    
     @Test
     public void test_empty_name() {
-        final Throwable exception = expectThrows(IllegalArgumentException.class, () -> {
+        final Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             new FieldName(" ");
         });
         assertEquals("Name contains no visibile character", exception.getMessage());

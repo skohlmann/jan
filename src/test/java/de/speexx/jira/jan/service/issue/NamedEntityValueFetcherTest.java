@@ -19,7 +19,7 @@ package de.speexx.jira.jan.service.issue;
 
 
 import com.atlassian.jira.rest.client.api.NamedEntity;
-import static org.junit.jupiter.api.Assertions.expectThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ public class NamedEntityValueFetcherTest {
     
     @Test
     public void wrongType() {
-        final Throwable exception = expectThrows(UnsupportedSourceTypeException.class, () -> {
+        final Throwable exception = assertThrows(UnsupportedSourceTypeException.class, () -> {
             new NamedEntityValueFetcher().getValue("No NamedEntity");
         });
         assertEquals("Value type class java.lang.String not supported by de.speexx.jira.jan.service.issue.NamedEntityValueFetcher", exception.getMessage());

@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.expectThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 public class FieldNamePathTest {
@@ -38,7 +38,7 @@ public class FieldNamePathTest {
 
     @Test
     public void test_null_creation_with_FieldName_array() {
-        final Throwable exception = expectThrows(NullPointerException.class, () -> {
+        final Throwable exception = assertThrows(NullPointerException.class, () -> {
             new FieldNamePath((FieldName[]) null);
         });
         assertEquals("pathElements is null", exception.getMessage());
@@ -46,7 +46,7 @@ public class FieldNamePathTest {
 
     @Test
     public void test_null_creation_with_FieldName_list() {
-        final Throwable exception = expectThrows(NullPointerException.class, () -> {
+        final Throwable exception = assertThrows(NullPointerException.class, () -> {
             new FieldNamePath((List<FieldName>) null);
         });
         assertEquals("pathElements is null", exception.getMessage());
@@ -54,7 +54,7 @@ public class FieldNamePathTest {
 
     @Test
     public void test_creation_with_null_FieldName_entry_in_array() {
-        final Throwable exception = expectThrows(IllegalArgumentException.class, () -> {
+        final Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             new FieldNamePath(new FieldName[] {new FieldName("abc"), null});
         });
         assertTrue(exception.getMessage().startsWith("FieldName list contains null value: "));
@@ -62,7 +62,7 @@ public class FieldNamePathTest {
 
     @Test
     public void test_creation_with_null_FieldName_entry_in_list() {
-        final Throwable exception = expectThrows(IllegalArgumentException.class, () -> {
+        final Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             new FieldNamePath(Arrays.asList(new FieldName[] {new FieldName("abc"), null}));
         });
         assertTrue(exception.getMessage().startsWith("FieldName list contains null value: "));
@@ -70,7 +70,7 @@ public class FieldNamePathTest {
 
     @Test
     public void test_creation_with_no_root_in_array() {
-        final Throwable exception = expectThrows(IllegalArgumentException.class, () -> {
+        final Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             new FieldNamePath(new FieldName[] {});
         });
         assertTrue(exception.getMessage().startsWith("No root element given"));
@@ -78,7 +78,7 @@ public class FieldNamePathTest {
 
     @Test
     public void test_creation_with_no_root_in_list() {
-        final Throwable exception = expectThrows(IllegalArgumentException.class, () -> {
+        final Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             new FieldNamePath(Arrays.asList(new FieldName[] {}));
         });
         assertTrue(exception.getMessage().startsWith("No root element given"));
@@ -100,7 +100,7 @@ public class FieldNamePathTest {
         assertEquals("", path.getPathWithoutRoot().asString());
         assertEquals(0, path.getPathWithoutRoot().length());
 
-        final Throwable exception = expectThrows(IllegalArgumentException.class, () -> {
+        final Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             path.getPathWithoutRoot().getPathWithoutRoot();
         });
     }

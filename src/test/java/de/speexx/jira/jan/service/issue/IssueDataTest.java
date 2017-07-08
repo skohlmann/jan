@@ -21,7 +21,7 @@ import  java.time.LocalDateTime;
 import static java.time.LocalDateTime.now;
 import static java.time.LocalDateTime.of;
 import java.time.Month;
-import static org.junit.jupiter.api.Assertions.expectThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -79,7 +79,7 @@ public class IssueDataTest {
     @Test
     public void test_simple_addCurrentFieldData_with_null_key() {
         final IssueData data = new IssueData();
-        final Throwable exception = expectThrows(NullPointerException.class, () -> {
+        final Throwable exception = assertThrows(NullPointerException.class, () -> {
             data.addCurrentFieldData(null, data);
         });
         assertEquals("fieldNamePath is null", exception.getMessage());
@@ -88,7 +88,7 @@ public class IssueDataTest {
     @Test
     public void test_simple_addCurrentFieldData_with_key_createdDate_but_illegal_value_type() {
         final IssueData data = new IssueData();
-        final Throwable exception = expectThrows(IllegalArgumentException.class, () -> {
+        final Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             data.addCurrentFieldData(FIELDNAME_PATH_CREATEDDATE, new Object());
         });
         assertTrue(exception.getMessage().startsWith("Value for path "));
@@ -130,7 +130,7 @@ public class IssueDataTest {
     @Test
     public void test_simple_addHistoricalDataEntry_with_null_key() {
         final IssueData data = new IssueData();
-        final Throwable exception = expectThrows(NullPointerException.class, () -> {
+        final Throwable exception = assertThrows(NullPointerException.class, () -> {
             final IssueData.HistoricalDataEntry entry = new IssueData.HistoricalDataEntry("from", now(), "to");
             data.addHistoricalDataEntry(null, entry);
         });

@@ -21,7 +21,7 @@ package de.speexx.jira.jan.service.issue;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.Set;
-import static org.junit.jupiter.api.Assertions.expectThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 import static de.speexx.jira.jan.service.issue.IssueCoreFieldConfig.IssueCoreFieldDescriptionEntry;
@@ -32,7 +32,7 @@ public class IssueCoreFieldDescriptionEntryTest {
     
     @Test
     public void createInstanceWithoutFieldName() {
-        final Throwable exception = expectThrows(IllegalArgumentException.class, () -> {
+        final Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             new IssueCoreFieldDescriptionEntry(null, this.aliases, simpleMethod(), false, Class.class);
         });
         assertEquals("Fieldname is null", exception.getMessage());
@@ -40,7 +40,7 @@ public class IssueCoreFieldDescriptionEntryTest {
 
     @Test
     public void createInstanceWithoutIssueGetterMethod() {
-        final Throwable exception = expectThrows(IllegalArgumentException.class, () -> {
+        final Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             new IssueCoreFieldDescriptionEntry(new FieldName("key"), this.aliases, null, false, Class.class);
         });
         assertEquals("FieldNameMethod is null", exception.getMessage());
@@ -48,7 +48,7 @@ public class IssueCoreFieldDescriptionEntryTest {
 
     @Test
     public void createInstanceWithoutCast() {
-        final Throwable exception = expectThrows(IllegalArgumentException.class, () -> {
+        final Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
             new IssueCoreFieldDescriptionEntry(new FieldName("key"), this.aliases, simpleMethod(), false, null);
         });
         assertEquals("Cast is null", exception.getMessage());

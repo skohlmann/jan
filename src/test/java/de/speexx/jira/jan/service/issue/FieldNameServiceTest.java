@@ -17,7 +17,7 @@
  */
 package de.speexx.jira.jan.service.issue;
 
-import static org.junit.jupiter.api.Assertions.expectThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ public class FieldNameServiceTest {
  
     @Test
     public void test_createFieldName_with_null() {
-        final Throwable exception = expectThrows(NullPointerException.class, () -> {
+        final Throwable exception = assertThrows(NullPointerException.class, () -> {
             new FieldNameService().createFieldName(null);
         });
         assertEquals("fieldname is null", exception.getMessage());

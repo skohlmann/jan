@@ -21,7 +21,7 @@ import static de.speexx.jira.jan.service.issue.IssueData.HistoricalDataEntry;
 import java.time.LocalDateTime;
 import static java.time.LocalDateTime.now;
 
-import static org.junit.jupiter.api.Assertions.expectThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +39,7 @@ public class HistoricalDataEntryTest {
 
     @Test
     public void test_creation_with_change_date_null() {
-        final Throwable exception = expectThrows(NullPointerException.class, () -> {
+        final Throwable exception = assertThrows(NullPointerException.class, () -> {
             new HistoricalDataEntry("from", null, "to");
         });
         assertEquals("Changedate is null", exception.getMessage());

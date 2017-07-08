@@ -18,7 +18,7 @@
 package de.speexx.jira.jan.command.issuequery;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.expectThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 public class StringToFieldNameConverterTest {
@@ -30,7 +30,7 @@ public class StringToFieldNameConverterTest {
 
     @Test
     public void test_null_parameter() {
-        final Throwable exception = expectThrows(NullPointerException.class, () -> {
+        final Throwable exception = assertThrows(NullPointerException.class, () -> {
             new StringToFieldNameConverter().convert(null);
         });
         assertEquals("Name is null", exception.getMessage());

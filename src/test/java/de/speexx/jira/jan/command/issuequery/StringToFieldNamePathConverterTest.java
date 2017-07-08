@@ -25,7 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.expectThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 
 
@@ -48,7 +48,7 @@ public class StringToFieldNamePathConverterTest {
 
     @Test
     public void test_null_parameter() {
-        final Throwable exception = expectThrows(NullPointerException.class, () -> {
+        final Throwable exception = assertThrows(NullPointerException.class, () -> {
             new StringToFieldNamePathConverter().convert(null);
         });
         assertEquals("Path is null", exception.getMessage());

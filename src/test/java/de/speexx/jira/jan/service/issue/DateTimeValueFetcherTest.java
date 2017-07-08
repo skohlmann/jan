@@ -19,7 +19,7 @@ package de.speexx.jira.jan.service.issue;
 
 import java.time.LocalDateTime;
 import org.joda.time.DateTime;
-import static org.junit.jupiter.api.Assertions.expectThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.Test;
@@ -38,7 +38,7 @@ public class DateTimeValueFetcherTest {
     
     @Test
     public void test_wrong_type() {
-        final Throwable exception = expectThrows(UnsupportedSourceTypeException.class, () -> {
+        final Throwable exception = assertThrows(UnsupportedSourceTypeException.class, () -> {
             new DateTimeValueFetcher().getValue("No Joda DateTime");
         });
         assertEquals("Value type class java.lang.String not supported by de.speexx.jira.jan.service.issue.DateTimeValueFetcher", exception.getMessage());

@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.expectThrows;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestFactory;
@@ -31,7 +31,7 @@ public class TemporalParameterValidatorTest {
 
     @Test
     public void test_validate_unknown_parameter_value() {
-        final Throwable exception = expectThrows(ParameterException.class, () -> {
+        final Throwable exception = assertThrows(ParameterException.class, () -> {
             new TemporalParameterValidator().validate("-t", "test");
         });
         assertEquals("Illegal temporal parameter value: test", exception.getMessage());
@@ -44,7 +44,7 @@ public class TemporalParameterValidatorTest {
 
     @Test
     public void test_validate_null_parameter_value() {
-        final Throwable exception = expectThrows(ParameterException.class, () -> {
+        final Throwable exception = assertThrows(ParameterException.class, () -> {
             new TemporalParameterValidator().validate("--temporal", null);
         });
         assertEquals("Illegal temporal parameter value: null", exception.getMessage());
