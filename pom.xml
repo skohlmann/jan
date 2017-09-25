@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.speexx.jira.jan</groupId>
     <artifactId>jan-core</artifactId>
-    <version>9-SNAPSHOT</version>
+    <version>10</version>
     <packaging>jar</packaging>
     
     <name>jan</name>
@@ -16,8 +16,8 @@
         
         <jira.rest-client.version>4.0.0</jira.rest-client.version>
         <jira.greenhopper.version>7.1.18</jira.greenhopper.version>
-        <junit.jupiter.version>5.0.0-M5</junit.jupiter.version>
-        <junit.platform.version>1.0.0-M5</junit.platform.version>
+        <junit.jupiter.version>5.0.0</junit.jupiter.version>
+        <junit.platform.version>1.0.0</junit.platform.version>
         <slf4j.version>1.7.21</slf4j.version>
     </properties>
 
@@ -92,6 +92,11 @@
                         <groupId>org.junit.platform</groupId>
                         <artifactId>junit-platform-surefire-provider</artifactId>
                         <version>${junit.platform.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter-engine</artifactId>
+                        <version>${junit.jupiter.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
